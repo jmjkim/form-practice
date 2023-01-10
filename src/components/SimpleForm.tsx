@@ -1,4 +1,4 @@
-import React, {createContext, PropsWithChildren} from 'react';
+import {createContext, PropsWithChildren, useMemo, useState} from 'react';
 
 export const FormContext = createContext({
     setValues: (v: any) => {
@@ -7,8 +7,8 @@ export const FormContext = createContext({
 })
 
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
-    const [values, setValues] = React.useState({});
-    const value = React.useMemo(() => ({setValues, values}), [setValues, values])
+    const [values, setValues] = useState({});
+    const value = useMemo(() => ({setValues, values}), [setValues, values])
 
     const onClick = (e: any) => {
         e.preventDefault();

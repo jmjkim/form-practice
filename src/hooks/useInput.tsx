@@ -1,5 +1,5 @@
 import {InputProps} from "../types/InputProps";
-import React, {useContext} from "react";
+import React, {useCallback, useContext} from "react";
 import {FormContext} from "../components/SimpleForm";
 
 interface UseInputProps extends Pick<InputProps, 'source'> {
@@ -7,7 +7,7 @@ interface UseInputProps extends Pick<InputProps, 'source'> {
 
 function useInput(props: UseInputProps) {
     const {setValues, values} = useContext(FormContext);
-    const onChange = React.useCallback((v: string | number) => {
+    const onChange = useCallback((v: string | number) => {
         setValues({
             ...values,
             [props.source]: v,
