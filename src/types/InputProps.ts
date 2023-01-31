@@ -6,5 +6,6 @@ export interface InputProps {
     placeholder?: string;
     type?: HTMLInputTypeAttribute
 
-    validate: number[];
+    // validate has a function as a value that accepts a string and returns string or undefined value in array
+    validate: ((value: string) => string | undefined)[];
 }
