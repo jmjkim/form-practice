@@ -4,11 +4,8 @@ import {useInput} from "../hooks/useInput";
 
 
 const TextField: FunctionComponent<InputProps> = ({source, label, placeholder, type, validate}) => {
-    const { value, onChange, error } = useInput({source, validate});  
-    
-    function displayError() {
-        return error ? <p>{label} {error}</p> : null;
-    }
+    //name
+    const {value, onChange, errors} = useInput({source, validate});
 
     return (
         <div>
@@ -18,9 +15,11 @@ const TextField: FunctionComponent<InputProps> = ({source, label, placeholder, t
                        placeholder={placeholder}/>
             </div>
 
-            <div>
-                {displayError()}
-            </div>
+            {errors[source] && (
+                <div>
+                    <p>{label} {errors[source]}</p>
+                </div>
+            )}
         </div>
     );
 };

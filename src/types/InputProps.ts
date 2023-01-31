@@ -6,5 +6,5 @@ export interface InputProps {
     placeholder?: string;
     type?: HTMLInputTypeAttribute
 
-    validate: number[];
+    validate: ((value: string) => string | undefined)[];
 }
