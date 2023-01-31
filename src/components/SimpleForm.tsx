@@ -19,7 +19,7 @@ const SimpleForm = ({children}: PropsWithChildren<{}>) => {
         <FormContext.Provider value={value}>
             <form>
                 {children}
-                <button type={'submit'} onClick={onClick}>
+                <button id={'submit-btn'} type={'submit'} onClick={onClick}>
                     제출
                 </button>
             </form>
