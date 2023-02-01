@@ -30,16 +30,16 @@ const max = (maxNum: number) => (value: string, obj: errObj): string | undefined
 function useInput(props: UseInputProps) {
     const { setValues, values, errors, setErrors } = useContext(FormContext);
 
+    const errObj = {
+        key: props.source,
+        errors: errors, 
+        setErrors: setErrors,
+    };
+
+    console.log(errors)
+
     const onChange = useCallback((v: string) => {
         props.validate.forEach(func => {
-            const errObj = {
-                key: props.source,
-                errors: errors, 
-                setErrors: setErrors,
-            };
-
-            console.log(errors[props.source])
-
             const errorMessage = func(v, errObj);
 
             if (errorMessage) {
