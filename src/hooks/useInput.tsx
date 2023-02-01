@@ -1,55 +1,63 @@
 import {InputProps} from "../types/InputProps";
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext} from "react";
 import {FormContext} from "../components/SimpleForm";
 
 interface UseInputProps extends Pick<InputProps, 'source'>, Pick<InputProps, 'validate'> {
 }
 
-function min(minNum: number): number {
-    return minNum;
+const min = (minNum: number) => (value: string, obj: errObj): string | undefined=> {
+    if (value.length < minNum) {
+        if (value.length === 0) {
+            obj.setErrors({...obj.errors, [obj.key]: ""});
+        }
+        return `반드시 ${minNum}자 이상 입력해주세요.`
+
+    } else {
+        obj.setErrors({...obj.errors, [obj.key]: ""});
+    }
 }
 
-function max(maxNum: number): number {
-    return maxNum;
-}
+const max = (maxNum: number) => (value: string, obj: errObj): string | undefined => {
+    if (value.length > maxNum) {
+        return `반드시 ${maxNum}자 이하로 입력해주세요.`;
+    }
 
-function validateMinMax(input: any, min: number, max: number): string {
-    if (input && input.length < min) 
-        return "must be greater than 5";
-
-    else if (input && input.length > max) 
-        return "cannot exceed 10";
-
-    else
-        return ""
-}
-
-function disableBtn(error: string) {
-    const btn = document.getElementById("submit-btn") as HTMLButtonElement | null;
-
-    if (error && btn != null) 
-        btn.disabled = true;
-
-    else if (!error && btn != null) 
-        btn.disabled = false;
+    else if (value.length === 0) {
+        obj.setErrors({...obj.errors, [obj.key]: ""});
+    }
 }
 
 function useInput(props: UseInputProps) {
-    const {setValues, values} = useContext(FormContext);
-    const [ error, setError ] = useState("");
+    const { setValues, values, errors, setErrors } = useContext(FormContext);
 
-    const onChange = useCallback((v: string | number) => {
-        setError(validateMinMax(v, props.validate[0], props.validate[1]));
+    const onChange = useCallback((v: string) => {
+        props.validate.forEach(func => {
+            const errObj = {
+                key: props.source,
+                errors: errors, 
+                setErrors: setErrors,
+            };
 
-        setValues({
-            ...values,
-            [props.source]: v,
-        });
+            console.log(errors[props.source])
 
-        disableBtn(error);
+            const errorMessage = func(v, errObj);
+
+            if (errorMessage) {
+                setErrors({
+                    ...errors,
+                    [props.source]: errorMessage,
+                });
+            }
+
+            setValues({
+                ...values,
+                [props.source]: v,
+            });
+        })
+
     }, [values, props.source]);
-    
-    return {value: values[props.source], onChange, error}
+
+    return {value: values[props.source], onChange, errors}
 }
 
 export {min, max, useInput};
