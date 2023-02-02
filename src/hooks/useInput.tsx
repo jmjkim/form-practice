@@ -36,8 +36,6 @@ function useInput(props: UseInputProps) {
         setErrors: setErrors,
     };
 
-    console.log(errors)
-
     const onChange = useCallback((v: string) => {
         props.validate.forEach(func => {
             const errorMessage = func(v, errObj);

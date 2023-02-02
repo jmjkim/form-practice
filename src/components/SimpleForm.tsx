@@ -13,15 +13,18 @@ export const FormContext = createContext({
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
     const [values, setValues] = useState({});
     const [errors, setErrors] = useState({});
-    
-    const value = useMemo(() => ({setValues, values, errors, setErrors}), [setValues, values, errors, setErrors])
+
+    const value = useMemo(() => ({setValues, values, errors, setErrors}), [setValues, values, errors, setErrors]);
+
+    const isValuesValid = !Object.values(values).every(val => val === "");
+    const noErrors = Object.values(errors).every(err => err === "");
 
     const onClick = (e: any) => {
         e.preventDefault();
 
-        // if (errors) {
-        //     alert(JSON.stringify(values));
-        // }
+        if (isValuesValid && noErrors) {
+            alert(JSON.stringify(values));
+        }
     }
 
     return (
