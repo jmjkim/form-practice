@@ -1,36 +1,56 @@
-import React, {createContext, PropsWithChildren, useMemo, useState} from 'react';
+import {createContext, PropsWithChildren, useMemo, useState} from 'react';
 
 export const FormContext = createContext({
     setValues: (v: any) => {
-    },
+    }, 
     values: {} as Record<string, any>,
+
+    setErrors: (v: any) => {
+    },
+    errors: {} as Record<string, string>,
+
+    setSelectboxValues: (v: any) => {
+    },
+    selectboxValues: {} as Record<string, string>,
+
+    setCheckboxValues: (v: any) => {
+    },
+    checkboxValues: {} as Record<string, string>,
 })
 
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
     const [values, setValues] = useState({});
-    const [errors, setErrors] = useState("");
+    const [errors, setErrors] = useState({});
+    const [selectboxValues, setSelectboxValues] = useState({});
+    const [checkboxValues, setCheckboxValues] = useState({});
 
-    // {
-    //     name: "반드시 5자 이상 입력해주세요",
-    //     password: "반드시 10자 이하로 입력해주세요",
-    // }
+    const value = useMemo(() => ({
+        setValues, values, setErrors, errors, setSelectboxValues, selectboxValues, setCheckboxValues, checkboxValues,
+    }), [setValues, values, setErrors, errors, setSelectboxValues, selectboxValues, setCheckboxValues, checkboxValues]);
 
-    const value = useMemo(() => ({setValues, values, errors, setErrors}), [setValues, values, errors, setErrors])
+    const submitValues = {
+        ...values,
+        ...selectboxValues,
+        ...checkboxValues,
+    }
+
+    const valuesNotEmpty = Object.values(submitValues).every(val => val !== "");
+    const noErrors = Object.values(errors).every(err => err === "");
+
+    console.log(submitValues, valuesNotEmpty, noErrors);
 
     const onClick = (e: any) => {
         e.preventDefault();
-        if (errors) {
-            // do nothing
-        } else {
-            alert(JSON.stringify(values));
-        }
+
+        if (valuesNotEmpty && noErrors)
+            alert(JSON.stringify(submitValues));
     }
 
     return (
         <FormContext.Provider value={value}>
             <form>
                 {children}
-                <button id={'submit-btn'} type={'submit'} onClick={onClick}>
+                <button type={'submit'} onClick={onClick}>
                     제출
                 </button>
             </form>
