@@ -8,14 +8,6 @@ export const FormContext = createContext({
     setErrors: (v: any) => {
     },
     errors: {} as Record<string, string>,
-
-    setSelectboxValues: (v: any) => {
-    },
-    selectboxValues: {} as Record<string, string>,
-
-    setCheckboxValues: (v: any) => {
-    },
-    checkboxValues: {} as Record<string, string>,
 })
 
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
