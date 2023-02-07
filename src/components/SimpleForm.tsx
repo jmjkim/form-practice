@@ -8,42 +8,24 @@ export const FormContext = createContext({
     setErrors: (v: any) => {
     },
     errors: {} as Record<string, string>,
-
-    setSelectboxValues: (v: any) => {
-    },
-    selectboxValues: {} as Record<string, string>,
-
-    setCheckboxValues: (v: any) => {
-    },
-    checkboxValues: {} as Record<string, string>,
 })
 
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({
+        location: [],
+    });
     const [errors, setErrors] = useState({});
-    const [selectboxValues, setSelectboxValues] = useState({});
-    const [checkboxValues, setCheckboxValues] = useState({});
 
-    const value = useMemo(() => ({
-        setValues, values, setErrors, errors, setSelectboxValues, selectboxValues, setCheckboxValues, checkboxValues,
-    }), [setValues, values, setErrors, errors, setSelectboxValues, selectboxValues, setCheckboxValues, checkboxValues]);
+    const value = useMemo(() => ({setValues, values, setErrors, errors}), [setValues, values, setErrors, errors]);
 
-    const submitValues = {
-        ...values,
-        ...selectboxValues,
-        ...checkboxValues,
-    }
-
-    const valuesNotEmpty = Object.values(submitValues).every(val => val !== "");
-    const noErrors = Object.values(errors).every(err => err === "");
-
-    console.log(submitValues, valuesNotEmpty, noErrors);
-
+    // const valuesNotEmpty = Object.values(submitValues).every(val => val !== "");
+    // const noErrors = Object.values(errors).every(err => err === "");
+    
     const onClick = (e: any) => {
         e.preventDefault();
-
-        if (valuesNotEmpty && noErrors)
-            alert(JSON.stringify(submitValues));
+        
+        // if (valuesNotEmpty && noErrors)
+        alert(JSON.stringify(values));
     }
 
     return (

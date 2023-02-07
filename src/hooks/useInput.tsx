@@ -50,7 +50,6 @@ function useInput(props: UseInputProps) {
     };
 
     const onChange = useCallback((v: string) => {
-        
         props.validate.forEach(func => {
             const errorMessage = func(v, errObj);
             
@@ -60,12 +59,12 @@ function useInput(props: UseInputProps) {
                     [props.source]: errorMessage,
                 })
             }
-
-            setValues({
-                ...values, 
-                [props.source]: v,
-            })
         });
+
+        setValues({
+            ...values, 
+            [props.source]: v,
+        })
     }, [values, props.source]);
 
     return {value: values[props.source], onChange, errors}
