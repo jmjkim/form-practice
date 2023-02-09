@@ -20,6 +20,8 @@ const SimpleForm = ({children}: PropsWithChildren<{}>) => {
 
     // const valuesNotEmpty = Object.values(submitValues).every(val => val !== "");
     // const noErrors = Object.values(errors).every(err => err === "");
+
+    console.log(values);
     
     const onClick = (e: any) => {
         e.preventDefault();
