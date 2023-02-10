@@ -2,7 +2,7 @@ import {createContext, PropsWithChildren, useMemo, useState} from 'react';
 
 export const FormContext = createContext({
     setValues: (v: any) => {
-    }, 
+    },
     values: {} as Record<string, any>,
 
     setErrors: (v: any) => {
@@ -13,6 +13,7 @@ export const FormContext = createContext({
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
     const [values, setValues] = useState({
         location: [],
+
     });
     const [errors, setErrors] = useState({});
 
@@ -22,10 +23,10 @@ const SimpleForm = ({children}: PropsWithChildren<{}>) => {
     // const noErrors = Object.values(errors).every(err => err === "");
 
     console.log(values);
-    
+
     const onClick = (e: any) => {
         e.preventDefault();
-        
+
         // if (valuesNotEmpty && noErrors)
         alert(JSON.stringify(values));
     }
