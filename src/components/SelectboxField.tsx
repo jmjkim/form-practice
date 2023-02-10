@@ -2,14 +2,14 @@ import {FunctionComponent} from 'react';
 import {SelectboxProps} from "../types/SelectboxProps";
 import {useInput} from '../hooks/useInput';
 
-const SelectboxField: FunctionComponent<SelectboxProps> = ({source, label, type}) => {
+const SelectboxField: FunctionComponent<SelectboxProps> = ({source, label, type, }) => {
     const {onChange} = useInput({source, validate: []});
-    
+
     return (
         <div>
             <div style={{display: 'flex', gridGap: '8px'}}>
                 <label htmlFor={source}>{label}</label>
-                
+
                 <input id={'남'} name={source} type={type} value={'남'} onChange={e => onChange(e.target.value)}/>
                 <label htmlFor={'남'}>남</label>
 

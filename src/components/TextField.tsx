@@ -9,7 +9,7 @@ const TextField: FunctionComponent<InputProps> = ({source, label, placeholder, t
         <div>
             <div style={{display: 'flex', gridGap: '8px'}}>
                 <label htmlFor={source}>{label}</label>
-                <input value={value} onChange={e => onChange(e.target.value)} name={source} type={type}
+                <input required value={value} onChange={e => onChange(e.target.value)} name={source} type={type}
                        placeholder={placeholder}/>
             </div>
 

@@ -2,7 +2,7 @@ import {createContext, PropsWithChildren, useMemo, useState} from 'react';
 
 export const FormContext = createContext({
     setValues: (v: any) => {
-    }, 
+    },
     values: {} as Record<string, any>,
 
     setErrors: (v: any) => {
@@ -14,7 +14,7 @@ const SimpleForm = ({children}: PropsWithChildren<{}>) => {
     const [values, setValues] = useState({ location: [] });
     const [errors, setErrors] = useState({});
     const value = useMemo(() => ({setValues, values, setErrors, errors}), [setValues, values, setErrors, errors]);
-    
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
