@@ -11,30 +11,36 @@ export const FormContext = createContext({
 })
 
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
-    const [values, setValues] = useState({
-        location: [],
-    });
+    const [values, setValues] = useState({ location: [] });
     const [errors, setErrors] = useState({});
-
     const value = useMemo(() => ({setValues, values, setErrors, errors}), [setValues, values, setErrors, errors]);
-
-    // const valuesNotEmpty = Object.values(submitValues).every(val => val !== "");
-    // const noErrors = Object.values(errors).every(err => err === "");
-
-    console.log(values);
     
-    const onClick = (e: any) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
-        
-        // if (valuesNotEmpty && noErrors)
-        alert(JSON.stringify(values));
+
+        const formData = new FormData(e.target);
+        const formDataObj = Object.fromEntries(formData.entries());
+
+        const inputsNotEmpty = Object.values(formDataObj).every(v => v !== "")
+        const noErrors = Object.values(errors).length === 0;
+
+        if (inputsNotEmpty && noErrors) {
+            alert(JSON.stringify(values))
+        }
     }
+
+    // const onClick = (e: any) => {
+        // e.preventDefault();
+        // if (noErrors) {
+        //     alert(JSON.stringify(values));
+        // }
+    // }
 
     return (
         <FormContext.Provider value={value}>
-            <form>
+            <form onSubmit={handleSubmit}>
                 {children}
-                <button type={'submit'} onClick={onClick}>
+                <button type={'submit'}>
                     제출
                 </button>
             </form>
