@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {CheckboxProps} from "../types/CheckboxProps";
-import {useInput} from '../hooks/useInput';
+import useInput from '../hooks/useInput';
 
 const CheckboxField: FunctionComponent<CheckboxProps> = ({source, label, type, validate}) => {
     const {value, onChange, errors} = useInput({source, validate});

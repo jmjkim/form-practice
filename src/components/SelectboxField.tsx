@@ -1,6 +1,6 @@
 import {FunctionComponent} from 'react';
 import {SelectboxProps} from "../types/SelectboxProps";
-import {useInput} from '../hooks/useInput';
+import useInput from '../hooks/useInput';
 
 const SelectboxField: FunctionComponent<SelectboxProps> = ({source, label, validate}) => {
     const {value, onChange, errors} = useInput({source, validate});

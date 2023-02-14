@@ -1,7 +1,8 @@
 import SimpleForm from "../components/SimpleForm";
 import TextField from "../components/TextField";
 import SelectboxField from "../components/SelectboxField";
-import {min, max, required} from "../hooks/useInput";
+// import {min, max, required} from "../hooks/useInput";
+import {min, max, required} from "../utils/utils"
 import CheckboxField from "../components/CheckboxField";
 
 function UserInfoForm(): JSX.Element {
