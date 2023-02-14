@@ -11,30 +11,26 @@ export const FormContext = createContext({
 })
 
 const SimpleForm = ({children}: PropsWithChildren<{}>) => {
-    const [values, setValues] = useState({ location: [] });
+    const [values, setValues] = useState({
+        name: "",
+        password: "",
+        gender: undefined,
+        location: [],
+    });
     const [errors, setErrors] = useState({});
+    // const [valid, setValid] = useState(false);
     const value = useMemo(() => ({setValues, values, setErrors, errors}), [setValues, values, setErrors, errors]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        const formData = new FormData(e.target);
-        const formDataObj = Object.fromEntries(formData.entries());
+        const validInputs = Object.values(values).every(v => v !== undefined && v !== "" && v.length > 0);
+        const noErrors = Object.values(errors).every(err => err === undefined);
 
-        const inputsNotEmpty = Object.values(formDataObj).every(v => v !== "")
-        const noErrors = Object.values(errors).length === 0;
-
-        if (inputsNotEmpty && noErrors) {
-            alert(JSON.stringify(values))
+        if (validInputs && noErrors) {
+            alert(JSON.stringify(values));
         }
     }
-
-    // const onClick = (e: any) => {
-        // e.preventDefault();
-        // if (noErrors) {
-        //     alert(JSON.stringify(values));
-        // }
-    // }
 
     return (
         <FormContext.Provider value={value}>
