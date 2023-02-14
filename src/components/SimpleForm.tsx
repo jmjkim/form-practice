@@ -18,7 +18,6 @@ const SimpleForm = ({children}: PropsWithChildren<{}>) => {
         location: [],
     });
     const [errors, setErrors] = useState({});
-    // const [valid, setValid] = useState(false);
     const value = useMemo(() => ({setValues, values, setErrors, errors}), [setValues, values, setErrors, errors]);
 
     const handleSubmit = (e: any) => {
