@@ -14,7 +14,7 @@ const SimpleForm = ({children}: PropsWithChildren<{}>) => {
     const [values, setValues] = useState({
         name: "",
         password: "",
-        gender: "",
+        gender: undefined,
         location: [],
     });
     const [errors, setErrors] = useState({});
@@ -24,7 +24,7 @@ const SimpleForm = ({children}: PropsWithChildren<{}>) => {
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        const validInputs = Object.values(values).every(v => v !== "" && v.length > 0);
+        const validInputs = Object.values(values).every(v => v !== undefined && v !== "" && v.length > 0);
         const noErrors = Object.values(errors).every(err => err === undefined);
 
         if (validInputs && noErrors) {

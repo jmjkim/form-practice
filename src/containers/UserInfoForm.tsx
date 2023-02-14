@@ -11,6 +11,7 @@ function UserInfoForm(): JSX.Element {
             <TextField type='password' source={'password'} label={'비밀번호'} validate={[min(5), max(10)]}/>
 
             <SelectboxField source={'gender'} label={'성별'} validate={[required()]}/>
+            {/*<SelectboxField source={'language'} label={'언어'} validate={[required()]}/>*/}
             <CheckboxField type={'checkbox'} source={'location'} label={'거주 국가'} validate={[required()]}/>
         </SimpleForm>
     );

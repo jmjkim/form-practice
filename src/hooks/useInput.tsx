@@ -17,7 +17,11 @@ const max = (maxNum: number) => (value: string): string | undefined => {
     }
 }
 
-const required = () => (value: string): string | undefined => {
+const required = () => (value: string | any[]): string | undefined => {
+    if (Array.isArray(value) && value.length === 0) {
+        return "반드시 선택해주세요.";
+    }
+
     if (value === "") {
         return "반드시 선택해주세요.";
     }
@@ -30,12 +34,12 @@ function useInput(props: UseInputProps) {
         const errorMessages = props.validate.map(func => {
             return func(v);
         }).filter(errMessage => errMessage !== undefined);
-        
+
         setErrors({
             ...errors,
             [props.source]: errorMessages[0],
         });
-        
+
         setValues({
             ...values,
             [props.source]: v,
