@@ -13,7 +13,13 @@ const min = (minNum: number) => (value: string): string | undefined => {
 
 const max = (maxNum: number) => (value: string): string | undefined => {
     if (value.length > maxNum) {
-        return `반드시 ${maxNum}자 이하로 입력해주세요.`
+        return `반드시 ${maxNum}자 이하로 입력해주세요.`;
+    }
+}
+
+const required = () => (value: string): string | undefined => {
+    if (value === "") {
+        return "반드시 선택해주세요.";
     }
 }
 
@@ -24,19 +30,19 @@ function useInput(props: UseInputProps) {
         const errorMessages = props.validate.map(func => {
             return func(v);
         }).filter(errMessage => errMessage !== undefined);
-
+        
         setErrors({
             ...errors,
             [props.source]: errorMessages[0],
         });
-
+        
         setValues({
             ...values,
             [props.source]: v,
-        })
+        });
     }, [values]);
 
     return {value: values[props.source], onChange, errors}
 }
 
-export {min, max, useInput};
+export {min, max, required, useInput};
