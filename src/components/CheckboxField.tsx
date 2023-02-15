@@ -1,17 +1,17 @@
 import React, {FunctionComponent} from 'react';
 import {CheckboxProps} from "../types/CheckboxProps";
-import {useInput} from '../hooks/useInput';
+import useInput from '../hooks/useInput';
 
 const CheckboxField: FunctionComponent<CheckboxProps> = ({source, label, type, validate}) => {
     const {value, onChange, errors} = useInput({source, validate});
 
     const onCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.checked) {
-            value.push(e.target.value);
+            const newLocationArr = (value ?? []).concat(e.target.value);
+            onChange(newLocationArr);
         } 
         
         else {
-            //The nullish coalescing (??) operator is a logical operator that returns its right-hand side operand when its left-hand side operand is null or undefined, and otherwise returns its left-hand side operand.  
             const newLocationArr = (value ?? []).filter((location: string) => location !== e.target.value);
             onChange(newLocationArr);
         }

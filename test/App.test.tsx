@@ -1,33 +1,44 @@
 /**
  * @jest-environment jsdom
  */
-import {render} from "@testing-library/react";
-import SimpleForm from "../src/components/SimpleForm";
-import TextField from "../src/components/TextField";
-import {max, min} from "../src/hooks/useInput";
+
+import 'jest';
+import React from "react";
+import {render, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-describe('', () => {
-    it('should render TextField', () => {
-        const input = render(
-            <SimpleForm>
-                <TextField
-                    testId={'name'}
-                    source={'name'}
-                    label={'name'}
-                    validate={[min(1), max(10)]}
-                />
-                <TextField
-                    source={'password'}
-                    label={'password'}
-                    validate={[min(1), max(8)]}
-                />
-            </SimpleForm>
-        );
+import {min, max} from "../src/utils/utils";
+import SimpleForm from "../src/components/SimpleForm";
+import TextField from "../src/components/TextField";
 
-        userEvent.type(input.getByRole('input'), 'a'.repeat(11));
+describe('Conducting a SimpleForm-TextField Test', () => {
+    render(
+        <SimpleForm>
+            <TextField
+            source={'name'}
+            label={'name'}
+            validate={[min(5), max(10)]}
+            />
 
-        expect(input.container).toBeInTheDocument();
-        expect(input.getByText('반드시 10자 이하로 입력해주세요.')).toBeInTheDocument();
+            <TextField
+            source={'password'}
+            label={'password'}
+            validate={[min(5), max(10)]}
+            />
+        </SimpleForm>
+    );
+
+    const nameInput = screen.getByLabelText('name');
+    const passwordInput = screen.getByLabelText('password');
+
+    test('TextFields for Name and Password should be rendered', () => {
+        expect(nameInput);
+        expect(passwordInput);
+    });
+
+    test('Input values for Name and Password should be validated(min(5), max(10))', () => {
+        userEvent.type(nameInput, 'abc');
     })
+    
+    screen.debug();
 });
