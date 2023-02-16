@@ -5,40 +5,41 @@
 import 'jest';
 import React from "react";
 import {render, screen} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent } from '@testing-library/react';
 
 import {min, max} from "../src/utils/utils";
-import SimpleForm from "../src/components/SimpleForm";
+import SimpleForm from '../src/components/SimpleForm';
 import TextField from "../src/components/TextField";
 
-describe('Conducting a SimpleForm-TextField Test', () => {
-    render(
-        <SimpleForm>
-            <TextField
-            source={'name'}
-            label={'name'}
-            validate={[min(5), max(10)]}
-            />
+describe('<TextField />', () => {
+    it('render error messages if validation fails', () => {
+        render(
+            <SimpleForm>
+                <TextField 
+                source={'name'}
+                label={'이름'}
+                validate={[min(5), max(10)]}
+                />
 
-            <TextField
-            source={'password'}
-            label={'password'}
-            validate={[min(5), max(10)]}
-            />
-        </SimpleForm>
-    );
+                <TextField 
+                source={'password'}
+                label={'비밀번호'}
+                validate={[min(5), max(10)]}
+                />
+            </SimpleForm>
+        );
 
-    const nameInput = screen.getByLabelText('name');
-    const passwordInput = screen.getByLabelText('password');
+        const name = screen.getByLabelText('이름');
+        const password = screen.getByLabelText('비밀번호');
 
-    test('TextFields for Name and Password should be rendered', () => {
-        expect(nameInput);
-        expect(passwordInput);
-    });
+        fireEvent.change(name, {target: {value: 'x'}});
+        fireEvent.change(password, {target: {value: 'x'}});
+        expect(screen.getAllByText(/이상 입력해주세요./));
 
-    test('Input values for Name and Password should be validated(min(5), max(10))', () => {
-        userEvent.type(nameInput, 'abc');
+        fireEvent.change(name, {target: {value: 'x'.repeat(11)}});
+        fireEvent.change(password, {target: {value: 'x'.repeat(11)}});
+        expect(screen.getAllByText(/이하로 입력해주세요./));
+
+        screen.debug();
     })
-    
-    screen.debug();
 });
