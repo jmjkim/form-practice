@@ -11,7 +11,7 @@ import {min, max} from "../src/utils/utils";
 import SimpleForm from '../src/components/SimpleForm';
 import TextField from "../src/components/TextField";
 
-describe('<TextField />', () => {
+describe('', () => {
     it('render error messages if validation fails', () => {
         render(
             <SimpleForm>
