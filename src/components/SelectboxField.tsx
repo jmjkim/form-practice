@@ -10,7 +10,7 @@ const SelectboxField: FunctionComponent<SelectboxProps> = ({source, label, valid
             <div style={{display: 'flex', gridGap: '8px'}}>
                 <label htmlFor={source}>{label}</label>
 
-                <select name={source} value={value} onChange={e => onChange(e.target.value)}>
+                <select id={source} name={source} value={value} onChange={e => onChange(e.target.value)}>
                     <option value="">선택</option>
                     <option value="남">남</option>
                     <option value="여">여</option>
