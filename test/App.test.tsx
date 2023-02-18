@@ -2,10 +2,12 @@
  * @jest-environment jsdom
  */
 
+// https://testing-library.com/docs/react-testing-library/setup/#skipping-auto-cleanup
+import '@testing-library/react/dont-cleanup-after-each'
+
 import React from "react";
-import {fireEvent, render, screen} from "@testing-library/react";
-import userEvent from '@testing-library/user-event';
 import "@testing-library/jest-dom";
+import {fireEvent, getAllByRole, getByDisplayValue, queryAllByRole, render, screen} from "@testing-library/react";
 
 import {min, max, required} from "../src/utils/utils";
 import SimpleForm from '../src/components/SimpleForm';
@@ -14,33 +16,37 @@ import SelectboxField from "../src/components/SelectboxField";
 import CheckboxField from "../src/components/CheckboxField";
 
 describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => {
-    it('#1 <TextField> - render error messages if validation (min(5), max(10)) fails', () => {
-        render(
+    describe('<TextField>', () => {
+        const {getByLabelText, queryByText} = render(
             <SimpleForm>
                 <TextField
-                source={'name'}
-                label={'이름'}
-                validate={[min(5), max(10)]}
+                    source={'name'}
+                    label={'이름'}
+                    validate={[min(5), max(10)]}
                 />
             </SimpleForm>
-        )
+        );
 
-        const name = screen.getByLabelText('이름');
+        const name = getByLabelText('이름');
 
-        fireEvent.change(name, {target: {value: 'x'.repeat(4)}});
-        expect(screen.getByText(/이상 입력해주세요./))
+        it('#1 min(5) - render an error message if input value is less than 5.', () => {
+            fireEvent.change(name, { target: { value: 'x'.repeat(4) } });
+            expect(queryByText(/이상 입력해주세요./)).not.toBeNull();
+        });
+        
+        it('#2 max(10) - render an error message if input value greater than 10.', () => {
+            fireEvent.change(name, { target: { value: 'x'.repeat(11) } });
+            expect(queryByText(/이하로 입력해주세요./)).not.toBeNull();
+        });
 
-        fireEvent.change(name, {target: {value: 'x'.repeat(11)}});
-        expect(screen.getByText(/이하로 입력해주세요./))
+        it('#3 validated - No error message.', () => {
+            fireEvent.change(name, { target: { value: 'x'.repeat(6) } });
+            expect(queryByText(/입력해주세요./)).toBeNull();
+        });
+    });
 
-        // check valid input values
-        fireEvent.change(name, {target: {value: 'x'.repeat(6)}});
-
-        expect(screen.queryByText(/이하로 입력해주세요./)).toBeNull()
-    })
-
-    it('#2 <SelectboxField> - render error messages if validation (required()) fails', () => {
-        const {getByRole} = render(
+    describe('<SelectBoxField>', () => {
+        const {getByRole, queryByText} = render(
             <SimpleForm>
                 <SelectboxField
                     source={'gender'}
@@ -49,23 +55,38 @@ describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => 
                 />
             </SimpleForm>
         );
+
         const selectElement = getByRole('combobox');
 
-        fireEvent.change(selectElement, { target: { value: '남' } });
-        expect(selectElement).toHaveValue("남");
-    })
+        it('#1 required() - render an error message if value is not selected.', () => {
+            fireEvent.change(selectElement, { target: { value: '' } });
+            expect(queryByText(/반드시 선택해주세요./)).not.toBeNull();
+        });
 
-    // it('#3 <CheckboxField> - render error messages if validation (required()) fails', () => {
-    //     render(
-    //         <CheckboxField
-    //         type={'checkbox'}
-    //         source={'location'}
-    //         label={'거주 국가'}
-    //         validate={[required()]}
-    //         />
-    //     );
+        it ('#2 required() - No error message if value is selected.', () => {
+            fireEvent.change(selectElement, { target: { value: '남' } });
+            expect(queryByText(/반드시 선택해주세요./)).toBeNull();
+        });
+    });
 
-    //     userEvent.click(screen.getByText('미국'));
-    //     screen.debug();
-    // })
+    describe('<CheckboxField>', () => {
+        const {queryAllByRole} = render(
+            <CheckboxField
+                type={'checkbox'}
+                source={'location'}
+                label={'거주 국가'}
+                validate={[required()]}
+            />
+        );
+
+        const checkbox = queryAllByRole('checkbox');
+
+        it('#1 required() - render an error message if value(s) not checked.', () => {
+            fireEvent.click(checkbox[0]);
+            expect(checkbox[0]).toBeChecked();
+        });
+
+        // it('#2 required() - No error message if value(s) checked.', () => {
+        // })
+    });
 });
