@@ -7,7 +7,7 @@ import '@testing-library/react/dont-cleanup-after-each'
 
 import React from "react";
 import "@testing-library/jest-dom";
-import {fireEvent, getAllByRole, getByDisplayValue, queryAllByRole, render, screen} from "@testing-library/react";
+import {fireEvent, render} from "@testing-library/react";
 
 import {min, max, required} from "../src/utils/utils";
 import SimpleForm from '../src/components/SimpleForm';
@@ -26,7 +26,6 @@ describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => 
                 />
             </SimpleForm>
         );
-
         const name = getByLabelText('이름');
 
         it('#1 min(5) - render an error message if input value is less than 5.', () => {
@@ -55,7 +54,6 @@ describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => 
                 />
             </SimpleForm>
         );
-
         const selectElement = getByRole('combobox');
 
         it('#1 required() - render an error message if value is not selected.', () => {
@@ -70,23 +68,27 @@ describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => 
     });
 
     describe('<CheckboxField>', () => {
-        const {queryAllByRole} = render(
-            <CheckboxField
-                type={'checkbox'}
-                source={'location'}
-                label={'거주 국가'}
-                validate={[required()]}
-            />
+        const {queryAllByRole, queryByText} = render(
+            <SimpleForm>
+                <CheckboxField
+                    type={'checkbox'}
+                    source={'location'}
+                    label={'거주 국가'}
+                    validate={[required()]}
+                />
+            </SimpleForm>
         );
-
         const checkbox = queryAllByRole('checkbox');
 
         it('#1 required() - render an error message if value(s) not checked.', () => {
             fireEvent.click(checkbox[0]);
-            expect(checkbox[0]).toBeChecked();
+            fireEvent.click(checkbox[0]);
+            expect(queryByText(/반드시 선택해주세요./)).not.toBeNull();
         });
 
-        // it('#2 required() - No error message if value(s) checked.', () => {
-        // })
+        it('#2 required() - No error message if at least one value(s) checked.', () => {
+            fireEvent.click(checkbox[1])
+            expect(queryByText(/반드시 선택해주세요./)).toBeNull();
+        })
     });
 });
