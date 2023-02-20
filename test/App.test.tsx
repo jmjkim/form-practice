@@ -28,17 +28,17 @@ describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => 
         );
         const name = getByLabelText('이름');
 
-        it('#1 min(5) - it should render an error message if input length is less than 5.', () => {
+        it('#1 min(5) - should render an error message if input length is less than 5.', () => {
             fireEvent.change(name, { target: { value: 'x'.repeat(4) } });
             expect(queryByText(/이상 입력해주세요./)).not.toBeNull();
         });
         
-        it('#2 max(10) - it should render an error message if input length is greater than 10.', () => {
+        it('#2 max(10) - should render an error message if input length is greater than 10.', () => {
             fireEvent.change(name, { target: { value: 'x'.repeat(11) } });
             expect(queryByText(/이하로 입력해주세요./)).not.toBeNull();
         });
 
-        it('#3 validated - it should not render an error message if input length is between 5-10.', () => {
+        it('#3 validated - should not render an error message if input length is between 5-10.', () => {
             fireEvent.change(name, { target: { value: 'x'.repeat(6) } });
             expect(queryByText(/입력해주세요./)).toBeNull();
         });
@@ -56,12 +56,12 @@ describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => 
         );
         const selectElement = getByRole('combobox');
 
-        it('#1 required() - it should render an error message if value is not selected.', () => {
+        it('#1 required() - should render an error message if value is not selected.', () => {
             fireEvent.change(selectElement, { target: { value: '' } });
             expect(queryByText(/반드시 선택해주세요./)).not.toBeNull();
         });
 
-        it ('#2 required() - it should not render an error message if value is selected.', () => {
+        it ('#2 required() - should not render an error message if value is selected.', () => {
             fireEvent.change(selectElement, { target: { value: '남' } });
             expect(queryByText(/반드시 선택해주세요./)).toBeNull();
         });
@@ -80,13 +80,13 @@ describe('Testing for <TextField>, <SelectboxField> and <CheckboxField>', () => 
         );
         const checkbox = queryAllByRole('checkbox');
 
-        it('#1 required() - it should render an error message if value is not checked.', () => {
+        it('#1 required() - should render an error message if value is not checked.', () => {
             fireEvent.click(checkbox[0]);
             fireEvent.click(checkbox[0]);
             expect(queryByText(/반드시 선택해주세요./)).not.toBeNull();
         });
 
-        it('#2 required() - it should not render error message if at least one value(s) checked.', () => {
+        it('#2 required() - should not render error message if at least one value(s) checked.', () => {
             fireEvent.click(checkbox[1])
             expect(queryByText(/반드시 선택해주세요./)).toBeNull();
         })
